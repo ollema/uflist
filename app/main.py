@@ -1,19 +1,17 @@
-"""uflist app."""
-from fastapi import FastAPI, Request
+"""uflist app.
+
+contains a lot of hacks to create routes dynamically based on language
+and based on the list of machines in machines.py
+
+some parts might be the best or the worst code I've ever written. not sure which"""
+from typing import Callable
+
+from fastapi import Cookie, FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from app.machines import (
-    MACHINES_SV,
-    Languages,
-    cnc_metal,
-    cnc_plasma,
-    cnc_wood,
-    fdm_printer,
-    laser,
-    resin_printer,
-)
+from app.machines import MACHINES_EN, MACHINES_SV, Languages, Machine
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
@@ -33,90 +31,32 @@ async def home(request: Request):
     return templates.TemplateResponse("home.html.j2", context)
 
 
-for machine in MACHINES_SV:
-
-    @app.get(f"/{machine.slug}", response_class=HTMLResponse)
-    async def _f(request: Request):
-        context = dict(
-            request=request,
-            language=Languages.SWEDISH,
-            machines=MACHINES_SV,
-            current_machine=machine,
-        )
+def _build_route(machine_sv: Machine, machine_en: Machine) -> Callable:
+    @app.get(f"/{machine_sv.slug}", response_class=HTMLResponse)
+    async def _f(
+        request: Request,
+        swedish: str | None = Cookie(default="true"),
+    ):
+        if swedish and swedish == "true":  # can only store strings in cookies
+            context = dict(
+                request=request,
+                language=Languages.SWEDISH,
+                machines=MACHINES_SV,
+                current_machine=machine_sv,
+            )
+        else:
+            context = dict(
+                request=request,
+                language=Languages.ENGLISH,
+                machines=MACHINES_EN,
+                current_machine=machine_en,
+            )
         return templates.TemplateResponse("machine.html.j2", context)
 
-    globals()[f"{machine.slug}_page"] = _f
+    return _f
 
+
+for msv, men in zip(MACHINES_SV, MACHINES_EN):
+    _f = _build_route(msv, men)
+    globals()[f"{msv.slug}_page"] = _f
     del _f
-
-
-# @app.get("/laser", response_class=HTMLResponse)
-# async def laser_page(request: Request):
-#     """Laser cutter page."""
-#     context = dict(
-#         request=request,
-#         language=Languages.SWEDISH,
-#         machines=MACHINES_SV,
-#         current_machine=laser,
-#     )
-#     return templates.TemplateResponse("machine.html.j2", context)
-
-
-# @app.get("/cnc_wood", response_class=HTMLResponse)
-# async def cnc_wood_page(request: Request):
-#     """CNC - wood page."""
-#     context = dict(
-#         request=request,
-#         language=Languages.SWEDISH,
-#         machines=MACHINES_SV,
-#         current_machine=cnc_wood,
-#     )
-#     return templates.TemplateResponse("machine.html.j2", context)
-
-
-# @app.get("/cnc_metal", response_class=HTMLResponse)
-# async def cnc_plastics_page(request: Request):
-#     """CNC - metal page."""
-#     context = dict(
-#         request=request,
-#         language=Languages.SWEDISH,
-#         machines=MACHINES_SV,
-#         current_machine=cnc_metal,
-#     )
-#     return templates.TemplateResponse("machine.html.j2", context)
-
-
-# @app.get("/cnc_plasma", response_class=HTMLResponse)
-# async def cnc_plasma_page(request: Request):
-#     """CNC - plasma page."""
-#     context = dict(
-#         request=request,
-#         language=Languages.SWEDISH,
-#         machines=MACHINES_SV,
-#         current_machine=cnc_plasma,
-#     )
-#     return templates.TemplateResponse("machine.html.j2", context)
-
-
-# @app.get("/fdm_printer", response_class=HTMLResponse)
-# async def fdm_printer_page(request: Request):
-#     """FDM printer page."""
-#     context = dict(
-#         request=request,
-#         language=Languages.SWEDISH,
-#         machines=MACHINES_SV,
-#         current_machine=fdm_printer,
-#     )
-#     return templates.TemplateResponse("machine.html.j2", context)
-
-
-# @app.get("/resin_printer", response_class=HTMLResponse)
-# async def resin_printer_page(request: Request):
-#     """Resin printer page."""
-#     context = dict(
-#         request=request,
-#         language=Languages.SWEDISH,
-#         machines=MACHINES_SV,
-#         current_machine=resin_printer,
-#     )
-#     return templates.TemplateResponse("machine.html.j2", context)

@@ -59,6 +59,7 @@ def create_machine(
     teardown_instructions: list[tuple[Instruction, Instruction]],
     wiki_link: str | None = None,
 ) -> tuple[Machine, Machine]:
+    # pylint: disable=too-many-arguments
     """Create Machine with Instructions (in two languages!)."""
     machine_sv = Machine(
         slug=slug,
@@ -73,8 +74,8 @@ def create_machine(
         name=name_en,
         description=description_en,
         wiki_link=wiki_link,  # type: ignore
-        setup_instructions=[si[0] for si in setup_instructions],
-        teardown_instructions=[ti[0] for ti in teardown_instructions],
+        setup_instructions=[si[1] for si in setup_instructions],
+        teardown_instructions=[ti[1] for ti in teardown_instructions],
     )
     return machine_sv, machine_en
 
