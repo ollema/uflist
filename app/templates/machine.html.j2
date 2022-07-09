@@ -8,7 +8,7 @@
 <div>
     {{ current_machine.description }}
 </div>
-{% if current_machine.wiki_link != "None" %}
+{% if current_machine.wiki_link %}
     <div class="mt-2 text-blue-800 underline">
         <a href="{{ current_machine.wiki_link }}">länk till wiki</a>
     </div>
