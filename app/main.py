@@ -3,7 +3,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
-from app.machines import (
+from .machines import (
     MACHINES_SV,
     Languages,
     cnc_metal,
