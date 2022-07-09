@@ -20,9 +20,8 @@ ENV PATH="/opt/venv/bin:$PATH"
 COPY --from=compile-image /opt/venv /opt/venv
 
 # create working directory & copy source code
-RUN mkdir /app
-WORKDIR /app
-COPY app /app
+RUN mkdir app
+COPY app app
 
 # start app
-CMD uvicorn main:app --host 0.0.0.0 --port 8080
+CMD uvicorn app.main:app --host 0.0.0.0 --port 8080
