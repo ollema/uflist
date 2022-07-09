@@ -5,8 +5,23 @@
     <meta charset="UTF-8">
     <meta name="description" content="Mikrofabriken Checklist Webapp">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <title>{% block title %}Checklists{% endblock %}</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon-16x16.png">
+    <link rel="manifest" href="/static/images/site.webmanifest">
+    <link rel="mask-icon" href="/static/images/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/static/images/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/static/images/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <link href="/static/css/main.css" rel="stylesheet">
+
+    <script src="/static/js/alpine.collapse.min.js"></script>
+    <script src="/static/js/alpine.min.js"></script>
+    <script src="/static/js/cookies.min.js"></script>
 </head>
 
 <body class="h-full">
@@ -42,7 +57,6 @@
 
             <div x-show="isOpen" class="md:hidden" id="mobile-menu">
                 <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                    <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                     {% for machine in machines %}
                     {% if current_machine and current_machine == machine %}
                     <a href="/{{ machine.slug }}" class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">{{ machine.name }}</a>
@@ -56,21 +70,13 @@
 
         <header class="bg-white shadow">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                {% if current_machine %}
-                <h1 class="text-3xl font-bold text-gray-900">{{ current_machine.name }}</h1>
-                {% else %}
-                <h1 class="text-3xl font-bold text-gray-900">Hello World!</h1>
-                {% endif %}
+                {% block header %}Hello{% endblock %}
             </div>
         </header>
 
-        <main>
-            <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                <div class="px-4 py-6 sm:px-0">
-                    <div class="border-4 border-dashed border-gray-200 rounded-lg h-96">
-                        {% block content %}{% endblock %}
-                    </div>
-                </div>
+        <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            <div class="px-4 sm:px-0">
+                {% block content %}{% endblock %}
             </div>
         </main>
     </div>

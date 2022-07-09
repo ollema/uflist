@@ -41,7 +41,7 @@ class Machine(BaseModel):
 
     name: str
 
-    desc: str
+    description: str
 
     wiki_link: HttpUrl | None = None
 
@@ -53,8 +53,8 @@ def create_machine(
     slug: str,
     name: str,
     name_en: str,
-    desc: str,
-    desc_en: str,
+    description: str,
+    description_en: str,
     setup_instructions: list[tuple[Instruction, Instruction]],
     teardown_instructions: list[tuple[Instruction, Instruction]],
     wiki_link: str | None = None,
@@ -63,7 +63,7 @@ def create_machine(
     machine_sv = Machine(
         slug=slug,
         name=name,
-        desc=desc,
+        description=description,
         wiki_link=wiki_link,  # type: ignore
         setup_instructions=[si[0] for si in setup_instructions],
         teardown_instructions=[ti[0] for ti in teardown_instructions],
@@ -71,7 +71,7 @@ def create_machine(
     machine_en = Machine(
         slug=slug,
         name=name_en,
-        desc=desc_en,
+        description=description_en,
         wiki_link=wiki_link,  # type: ignore
         setup_instructions=[si[0] for si in setup_instructions],
         teardown_instructions=[ti[0] for ti in teardown_instructions],
@@ -83,8 +83,8 @@ laser, laser_en = create_machine(
     slug="laser",
     name="Laserskärare",
     name_en="Laser cutter",
-    desc="En maskin som kan skära ut saker i diverse material.",
-    desc_en="A machine that can cut things using a laser beam.",
+    description="En maskin som kan skära ut saker i diverse material.",
+    description_en="A machine that can cut things using a laser beam.",
     wiki_link="http://wiki.mikrofabriken.se/index.php/Bodor_Lasersk%C3%A4rare",
     setup_instructions=[
         create_instruction(
@@ -134,8 +134,8 @@ cnc_wood, cnc_wood_en = create_machine(
     slug="cnc_wood",
     name="CNC - trä",
     name_en="CNC - wood",
-    desc="En maskin som kan fräsa ut saker i trä.",
-    desc_en="A machine that can mill things in wood using a cutter.",
+    description="En maskin som kan fräsa ut saker i trä.",
+    description_en="A machine that can mill things in wood using a cutter.",
     setup_instructions=[
         create_instruction(
             step=1,
@@ -184,8 +184,8 @@ cnc_metal, cnc_metal_en = create_machine(
     slug="cnc_metal",
     name="CNC - metall",
     name_en="CNC - metal",
-    desc="En maskin som kan fräsa ut saker i metal.",
-    desc_en="A machine that can mill things in metal using a cutter.",
+    description="En maskin som kan fräsa ut saker i metal.",
+    description_en="A machine that can mill things in metal using a cutter.",
     setup_instructions=[
         create_instruction(
             step=1,
@@ -234,8 +234,8 @@ cnc_plasma, cnc_plasma_en = create_machine(
     slug="cnc_plasma",
     name="CNC - plasma",
     name_en="CNC - plasma",
-    desc="En maskin som kan skära saker med hjälp av plasma.",
-    desc_en="A machine that can cut things using a plasma beam.",
+    description="En maskin som kan skära saker med hjälp av plasma.",
+    description_en="A machine that can cut things using a plasma beam.",
     setup_instructions=[
         create_instruction(
             step=1,
@@ -284,8 +284,8 @@ fdm_printer, fdm_printer_en = create_machine(
     slug="fdm_printer",
     name="FDM printer",
     name_en="FDM printer",
-    desc="En maskin som kan skriva ut saker i 3D.",
-    desc_en="A that can print things in 3D.",
+    description="En maskin som kan skriva ut saker i 3D.",
+    description_en="A that can print things in 3D.",
     setup_instructions=[
         create_instruction(
             step=1,
@@ -335,8 +335,8 @@ resin_printer, resin_printer_en = create_machine(
     slug="resin_printer",
     name="Resin printer",
     name_en="Resin printer",
-    desc="En maskin som kan skriva ut saker i 3D.",
-    desc_en="A that can print things in 3D.",
+    description="En maskin som kan skriva ut saker i 3D.",
+    description_en="A that can print things in 3D.",
     setup_instructions=[
         create_instruction(
             step=1,
