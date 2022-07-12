@@ -25,10 +25,10 @@ async def home(
     swedish: Union[str, None] = Cookie(default=None),
 ):
     """Home page."""
-    if swedish and swedish == "true":  # can only store strings in cookies
-        selected_language = Languages.SWEDISH
-    else:
+    if swedish and swedish == "false":  # can only store strings in cookies
         selected_language = Languages.ENGLISH
+    else:
+        selected_language = Languages.SWEDISH
 
     context = dict(
         request=request,
@@ -45,14 +45,14 @@ def _build_route(machine_sv: Machine, machine_en: Machine) -> Callable:
         request: Request,
         swedish: str | None = Cookie(default="true"),
     ):
-        if swedish and swedish == "true":  # can only store strings in cookies
-            selected_language = Languages.SWEDISH
-            selected_machine = machine_sv
-            selected_machines = MACHINES_SV
-        else:
+        if swedish and swedish == "false":  # can only store strings in cookies
             selected_language = Languages.ENGLISH
             selected_machine = machine_en
             selected_machines = MACHINES_EN
+        else:
+            selected_language = Languages.SWEDISH
+            selected_machine = machine_sv
+            selected_machines = MACHINES_SV
 
         context = dict(
             request=request,
