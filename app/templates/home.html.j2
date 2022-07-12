@@ -2,6 +2,10 @@
 
 {% block content %}
     <h1 class="text-xl font-bold">
+        {% if language.value == 'sv'%}
         Klicka på en maskin ovan!
+        {% else %}
+        Click on your machine of choice!
+        {% endif %}
     </h1>
 {% endblock %}
